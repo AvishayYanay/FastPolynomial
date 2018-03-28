@@ -2,6 +2,10 @@
 #include "recursive.h"
 #include "utils.h"
 
+using namespace std;
+using namespace NTL;
+using namespace chrono;
+
 #define LEFT(X) (2*X+1)
 #define RIGHT(X) (2*X+2)
 
