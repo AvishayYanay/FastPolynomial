@@ -11,12 +11,10 @@ set(CMAKE_CXX_FLAGS "-Wall")
 
 set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
-include_directories(/path-to/NTL/ntl-10.5.0/include)
+add_library(fastpoly recursive.cpp recursive.h utils.cpp utils.h iterative.cpp iterative.h)
 
-add_executable(fastpoly main.cpp recursive.cpp recursive.h utils.cpp utils.h iterative.cpp iterative.h)
+add_executable(test_fastpoly main.cpp)
 
-
-target_link_libraries(fastpoly /path-to/NTL/ntl-10.5.0/src/ntl.a)
-target_link_libraries(fastpoly gmp gmpxx)
-
-
+target_link_libraries(test_fastpoly fastpoly)
+target_link_libraries(test_fastpoly ntl)
+target_link_libraries(test_fastpoly gmp gmpxx)
