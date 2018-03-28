@@ -102,6 +102,8 @@ void multipoint_evaluate_zp_recursive(long degree, ZZ_pX &P, ZZ_p *X, ZZ_p *Y)
     cout << "Building tree: " << duration_cast<milliseconds>(end1 - begin1).count() << " ms" << endl;
     cout << "Evaluating points: " << duration_cast<milliseconds>(end2 - begin2).count() << " ms" << endl;
     cout << "Total: " << duration_cast<milliseconds>(end1 - begin1).count()+ duration_cast<milliseconds>(end2 - begin2).count() << " ms" << endl;
+
+    delete[] p_tree;
 }
 
 //void test_multipoint_eval_zp(ZZ prime, long degree)
@@ -185,6 +187,9 @@ void interpolate_zp(long degree, ZZ_p* X, ZZ_p* Y, ZZ_pX& resultP)
     cout << "Evaluate diff: " << duration_cast<milliseconds>(end[2] - begin[2]).count() << " ms" << endl;
     cout << "Interpolation: " << duration_cast<milliseconds>(end[3] - begin[3]).count() << " ms" << endl;
     cout << "Total: " << duration_cast<milliseconds>(end[0]-begin[0] + end[1]-begin[1] + end[2]-begin[2] + end[3]-begin[3]).count() << " ms" << endl;
+
+    delete[] M;
+    delete[] a;
 }
 
 void test_interpolation_result_zp_recursive(long degree, ZZ_p* X, ZZ_p* Y,ZZ_pX& P )
