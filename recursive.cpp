@@ -157,34 +157,34 @@ void interpolate_zp(long degree, ZZ_p* X, ZZ_p* Y, ZZ_pX& resultP)
 
     //we first build the tree of the super moduli
     ZZ_pX* M = new ZZ_pX[degree*2+1];
-    begin[1]= system_clock::now();
+    begin[0]= system_clock::now();
     build_tree(M,X,0, degree*2+1);
-    end[1] = system_clock::now();
+    end[0] = system_clock::now();
 //    test_tree_zp_iterative(M[0], x, degree+1);
 
     //we construct a preconditioned global structure for the a_k for all 1<=k<=(degree+1)
     ZZ_p* a = new ZZ_p[degree+1];
     ZZ_pX d;
-    begin[2] = system_clock::now();
+    begin[1] = system_clock::now();
     diff(d, M[0]);
-    end[2] = system_clock::now();
+    end[1] = system_clock::now();
 
     //recursive_evaluate_zp d(x) to obtain the results in the array a
-    begin[3] = system_clock::now();
+    begin[2] = system_clock::now();
     recursive_evaluate_zp(d, M, 0, degree * 2 + 1, a);
-    end[3] = system_clock::now();
+    end[2] = system_clock::now();
 
     //now we can apply the recursive formula
-    begin[4] = system_clock::now();
+    begin[3] = system_clock::now();
     recursive_interpolate_zp(resultP, 0, X, Y, a, M, degree*2+1);
-    end[4] = system_clock::now();
+    end[3] = system_clock::now();
 
     cout << " -- Recursive --" << endl<< endl;
-    cout << "Building tree: " << duration_cast<milliseconds>(end[1] - begin[1]).count() << " ms" << endl;
-    cout << "Differentiate: " << duration_cast<milliseconds>(end[2] - begin[2]).count() << " ms" << endl;
-    cout << "Evaluate diff: " << duration_cast<milliseconds>(end[3] - begin[3]).count() << " ms" << endl;
-    cout << "Interpolation: " << duration_cast<milliseconds>(end[4] - begin[4]).count() << " ms" << endl;
-    cout << "Total: " << duration_cast<milliseconds>(end[1]-begin[1] + end[2]-begin[2] + end[3]-begin[3] + end[4]-begin[4]).count() << " ms" << endl;
+    cout << "Building tree: " << duration_cast<milliseconds>(end[0] - begin[0]).count() << " ms" << endl;
+    cout << "Differentiate: " << duration_cast<milliseconds>(end[1] - begin[1]).count() << " ms" << endl;
+    cout << "Evaluate diff: " << duration_cast<milliseconds>(end[2] - begin[2]).count() << " ms" << endl;
+    cout << "Interpolation: " << duration_cast<milliseconds>(end[3] - begin[3]).count() << " ms" << endl;
+    cout << "Total: " << duration_cast<milliseconds>(end[0]-begin[0] + end[1]-begin[1] + end[2]-begin[2] + end[3]-begin[3]).count() << " ms" << endl;
 }
 
 void test_interpolation_result_zp_recursive(long degree, ZZ_p* X, ZZ_p* Y,ZZ_pX& P )
