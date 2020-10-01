@@ -9,6 +9,10 @@ using namespace NTL;
 #include "iterative.h"
 #include "recursive.h"
 
+using namespace std;
+using namespace NTL;
+using namespace chrono;
+
 //#define ITERATIVE
 
 void usage_example_zp(){
@@ -44,6 +48,11 @@ void usage_example_zp(){
 #else
     poly_evaluate_zp_recursive(degree, P, X2, Y2);
 #endif
+
+    delete[] X;
+    delete[] Y;
+    delete[] X2;
+    delete[] Y2;
 }
 
 

@@ -5,6 +5,10 @@
 #include "iterative.h"
 #include "utils.h"
 
+using namespace std;
+using namespace NTL;
+using namespace chrono;
+
 
 #define LEFT(X) (2*X+1)
 #define RIGHT(X) (2*X+2)
@@ -96,6 +100,9 @@ void multipoint_evaluate_zp_iterative(long degree, ZZ_pX &P, ZZ_p *X, ZZ_p *Y)
     cout << "Building tree: " << duration_cast<milliseconds>(end1 - begin1).count() << " ms" << endl;
     cout << "Evaluating points: " << duration_cast<milliseconds>(end2 - begin2).count() << " ms" << endl;
     cout << "Total: " << duration_cast<milliseconds>(end1 - begin1).count()+ duration_cast<milliseconds>(end2 - begin2).count() << " ms" << endl;
+
+    delete[] p_tree;
+    delete[] reminders;
 }
 
 
@@ -127,37 +134,42 @@ void interpolate_zp_iterative(long degree, ZZ_p* X, ZZ_p* Y, ZZ_pX& resultP)
 
     //we first build the tree of the super moduli
     ZZ_pX* M = new ZZ_pX[degree*2+1];
-    begin[1]= system_clock::now();
+    begin[0]= system_clock::now();
     build_tree_zp_iterative(M, X, degree * 2 + 1);
-    end[1] = system_clock::now();
+    end[0] = system_clock::now();
 //    test_tree_zp_iterative(M[0], x, degree+1);
 
     //we construct a preconditioned global structure for the a_k for all 1<=k<=(degree+1)
     ZZ_p* a = new ZZ_p[degree+1];
     ZZ_pX D;
-    begin[2] = system_clock::now();
+    begin[1] = system_clock::now();
     diff(D, M[0]);
-    end[2] = system_clock::now();
+    end[1] = system_clock::now();
 
     //recursive_evaluate_zp d(x) to obtain the results in the array a
     ZZ_pX* reminders = new ZZ_pX[degree*2+1];
-    begin[3] = system_clock::now();
+    begin[2] = system_clock::now();
     evaluate_zp_iterative(D, M, reminders, degree * 2 + 1, a);
-    end[3] = system_clock::now();
+    end[2] = system_clock::now();
 //    test_evaluate_zp_iterative(D,x,a,degree+1);
 
     //now we can apply the formula
     ZZ_pX* temp = new ZZ_pX[degree*2+1];
-    begin[4] = system_clock::now();
+    begin[3] = system_clock::now();
     interpolate_core_zp_iterative(resultP, temp, Y, a, M, degree * 2 + 1);
-    end[4] = system_clock::now();
+    end[3] = system_clock::now();
 
     cout << " -- Iterative --" << endl<< endl;
-    cout << "Building tree: " << duration_cast<milliseconds>(end[1] - begin[1]).count() << " ms" << endl;
-    cout << "Differentiate: " << duration_cast<milliseconds>(end[2] - begin[2]).count() << " ms" << endl;
-    cout << "Evaluate diff: " << duration_cast<milliseconds>(end[3] - begin[3]).count() << " ms" << endl;
-    cout << "Interpolation: " << duration_cast<milliseconds>(end[4] - begin[4]).count() << " ms" << endl;
-    cout << "Total: " << duration_cast<milliseconds>(end[1]-begin[1] + end[2]-begin[2] + end[3]-begin[3] + end[4]-begin[4]).count() << " ms" << endl;
+    cout << "Building tree: " << duration_cast<milliseconds>(end[0] - begin[0]).count() << " ms" << endl;
+    cout << "Differentiate: " << duration_cast<milliseconds>(end[1] - begin[1]).count() << " ms" << endl;
+    cout << "Evaluate diff: " << duration_cast<milliseconds>(end[2] - begin[2]).count() << " ms" << endl;
+    cout << "Interpolation: " << duration_cast<milliseconds>(end[3] - begin[3]).count() << " ms" << endl;
+    cout << "Total: " << duration_cast<milliseconds>(end[0]-begin[0] + end[1]-begin[1] + end[2]-begin[2] + end[3]-begin[3]).count() << " ms" << endl;
+
+    delete[] M;
+    delete[] a;
+    delete[] reminders;
+    delete[] temp;
 }
 
 

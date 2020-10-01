@@ -8,10 +8,7 @@
 #include <NTL/ZZ_pX.h>
 #include <NTL/ZZ.h>
 
-using namespace std;
-using namespace NTL;
-
-void print_poly (ZZ_pX& P);
+void print_poly (NTL::ZZ_pX& P);
 
 
 #endif //FASTPOLY_UTILS_H

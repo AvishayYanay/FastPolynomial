@@ -11,14 +11,10 @@
 #include <chrono>
 #include <sys/resource.h>
 
-using namespace std;
-using namespace NTL;
-using namespace chrono;
 
+void poly_interpolate_zp_recursive(long degree, NTL::ZZ_p *X, NTL::ZZ_p *Y, NTL::ZZ_pX &P);
 
-void poly_interpolate_zp_recursive(long degree, ZZ_p *X, ZZ_p *Y, ZZ_pX &P);
-
-void poly_evaluate_zp_recursive(long degree, ZZ_pX &P, ZZ_p *X, ZZ_p *Y);
+void poly_evaluate_zp_recursive(long degree, NTL::ZZ_pX &P, NTL::ZZ_p *X, NTL::ZZ_p *Y);
 
 
 

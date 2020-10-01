@@ -1,6 +1,9 @@
 
 #include "utils.h"
 
+using namespace std;
+using namespace NTL;
+
 
 void print_poly (ZZ_pX& P)
 {
